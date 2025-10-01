@@ -350,10 +350,26 @@
          "master"
          "tsx/src")))
 
+(use-package flyspell-babel-setup
+  :straight (:host github :repo "phimuemue/emacs-hacks"
+		   :files ("flyspell-babel.el"))
+  :hook (latex-mode . flyspell-babel-setup)
+  :commands (flyspell-babel-setup)))
+
 
 (use-package ispell-multi
   :straight (:host github :repo "phimuemue/emacs-hacks"
 		   :files ("ispell-multi.el")))
+
+
+(use-package ispell-multi
+  :straight (:host github :repo "phimuemue/emacs-hacks"
+		   :files ("ispell-multi.el")))
+
+(use-package anddo
+  :straight (:host github :repo "larsmagne"
+		   :files ("anddo.el")))
+
 
 (use-package min-elisp
   :straight (min-elisp
@@ -370,17 +386,18 @@
   ;; konfig etter load
   (message "min-elisp loaded"))
 
+
+
+
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8-unix)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (modify-coding-system-alist 'process "R" 'utf-8-unix)
 
-(autoload 'flyspell-babel-setup "flyspell-babel")
-(add-hook 'latex-mode-hook 'flyspell-babel-setup)
+
 
 (add-to-list 'text-mode-hook 'flyspell-mode-on)
 
-(require 'anddo)
 (require 'LaTeX-quote-hacks)
 
 (load custom-file)
