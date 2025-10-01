@@ -379,3 +379,5 @@
 (require 'LaTeX-quote-hacks)
 
 (load custom-file)
+
+(message "init.el av %s"  (format-time-string "%Y-%m-%d %H:%M:%S" (nth 5 (file-attributes (buffer-file-name)))))
