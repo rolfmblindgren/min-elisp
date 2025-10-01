@@ -318,7 +318,11 @@
           (lambda () (add-hook 'before-save-hook #'roffe/yaml-format-buffer-maybe nil t)))
 
 (use-package ws-butler
-  :straight (:type git :host github :repo "lewang/ws-butler")
+  :straight (ws-butler
+	     :type git
+	     :host github
+	     :repo "lewang/ws-butler"
+	     :branch "master")
   :hook (prog-mode . ws-butler-mode))
 
 
@@ -347,6 +351,10 @@
          "tsx/src")))
 
 
+(use-package ispell-multi
+  :straight (:host github :repo "phimuemue/emacs-hacks"
+		   :files ("ispell-multi.el")))
+
 (use-package min-elisp
   :straight (min-elisp
              :type git
@@ -362,13 +370,10 @@
   ;; konfig etter load
   (message "min-elisp loaded"))
 
-
-
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8-unix)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (modify-coding-system-alist 'process "R" 'utf-8-unix)
-
 
 (autoload 'flyspell-babel-setup "flyspell-babel")
 (add-hook 'latex-mode-hook 'flyspell-babel-setup)
