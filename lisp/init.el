@@ -317,6 +317,21 @@
 (add-hook 'yaml-ts-mode-hook
           (lambda () (add-hook 'before-save-hook #'roffe/yaml-format-buffer-maybe nil t)))
 
+(defun rb/straight-update-and-maybe-rebuild (pkg)
+  "Pull straight PKG. Rebuild bare hvis det kom nye commits.
+PKG skal være et symbol som f.eks. 'min-elisp."
+  (interactive (list (intern (completing-read "Package: " (hash-table-keys straight--recipe-cache)))))
+  (let* ((repo-dir (straight--repos-dir (symbol-name pkg)))
+         (default-directory repo-dir)
+         (before (string-trim (shell-command-to-string "git rev-parse HEAD"))))
+    (straight-pull-package pkg)
+    (let* ((after (string-trim (shell-command-to-string "git rev-parse HEAD"))))
+      (if (equal before after)
+          (message "%s er allerede oppdatert (%s)" pkg after)
+        (straight-rebuild-package pkg)
+        (message "%s oppdatert til %s og rebygd" pkg after)))))
+
+
 (use-package ws-butler
   :straight (ws-butler
 	     :type git

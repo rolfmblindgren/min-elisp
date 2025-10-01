@@ -1,3 +1,6 @@
+(require 'url)
+(require 'auth-source)
+
 (defun rb/auth-password (host user &optional port realm)
   "Hent passord for HOST/USER (PORT/REALM) fra auth-source."
   (let* ((m (car (auth-source-search
