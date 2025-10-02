@@ -1,5 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
+(message "init.el av %s"  (format-time-string "%Y-%m-%d %H:%M:%S" (nth 5 (file-attributes (buffer-file-name)))))
+
 (use-package exec-path-from-shell
   :ensure t)
 
@@ -417,4 +419,5 @@ PKG skal være et symbol som f.eks. 'min-elisp."
 
 (load custom-file)
 
-(message "init.el av %s"  (format-time-string "%Y-%m-%d %H:%M:%S" (nth 5 (file-attributes (buffer-file-name)))))
+
+;;;
