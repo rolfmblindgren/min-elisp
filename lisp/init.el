@@ -403,21 +403,17 @@ PKG skal være et symbol som f.eks. 'min-elisp."
   ;; konfig etter load
   (message "min-elisp loaded"))
 
-
-
-
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8-unix)
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (modify-coding-system-alist 'process "R" 'utf-8-unix)
-
-
 
 (add-to-list 'text-mode-hook 'flyspell-mode-on)
 
 (require 'LaTeX-quote-hacks)
 
 (load custom-file)
+
 
 
 ;;;
