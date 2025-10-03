@@ -375,15 +375,15 @@ PKG skal være et symbol som f.eks. 'min-elisp."
   :commands (flyspell-babel-setup))
 
 
+(use-package anddo
+  :straight (:host github :repo "larsmagne"
+		   :files ("anddo.el")))
 
 
 (use-package ispell-multi
   :straight (:host github :repo "phimuemue/emacs-hacks"
 		   :files ("ispell-multi.el")))
 
-(use-package anddo
-  :straight (:host github :repo "larsmagne"
-		   :files ("anddo.el")))
 
 (use-package min-elisp
   :straight (min-elisp
