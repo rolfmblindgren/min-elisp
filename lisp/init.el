@@ -413,6 +413,6 @@ PKG skal være et symbol som f.eks. 'min-elisp."
 
 (load custom-file)
 
-
+(provide 'init)
 
 ;;;
