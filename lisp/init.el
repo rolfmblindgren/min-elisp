@@ -387,7 +387,6 @@ PKG skal være et symbol som f.eks. 'min-elisp."
   :straight (:host github :repo "larsmagne"
 		   :files ("anddo.el")))
 
-
 (use-package min-elisp
   :straight (min-elisp
              :type git
