@@ -376,7 +376,7 @@ PKG skal være et symbol som f.eks. 'min-elisp."
 
 
 (use-package anddo
-  :straight (:host github :repo "larsmagne"
+  :straight (:host github :repo "larsmagne/anddo"
 		   :files ("anddo.el")))
 
 
