@@ -371,7 +371,7 @@ PKG skal være et symbol som f.eks. 'min-elisp."
   :straight (:host github :repo "phimuemue/emacs-hacks"
 		   :files ("flyspell-babel.el"))
   :hook (latex-mode . flyspell-babel-setup)
-  :commands (flyspell-babel-setup)))
+  :commands (flyspell-babel-setup))
 
 
 (use-package ispell-multi
