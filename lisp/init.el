@@ -394,7 +394,7 @@ PKG skal være et symbol som f.eks. 'min-elisp."
 (setq-default buffer-file-coding-system 'utf-8-unix)
 (modify-coding-system-alist 'process "R" 'utf-8-unix)
 
-(add-to-list 'text-mode-hook 'flyspell-mode-on)
+(add-to-list 'text-mode-hook 'flyspell-mode)
 
 (require 'LaTeX-quote-hacks)
 
