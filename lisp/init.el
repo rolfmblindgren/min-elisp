@@ -374,10 +374,15 @@ PKG skal være et symbol som f.eks. 'min-elisp."
   :hook (latex-mode . flyspell-babel-setup)
   :commands (flyspell-babel-setup))
 
-
 (use-package anddo
-  :straight (:host github :repo "larsmagne/anddo"
-		   :files ("anddo.el")))
+  :straight (anddo
+             :type git
+             :host github
+             :repo "larsmagne/anddo.el"
+             :local-repo "anddo-repo"
+             :files ("anddo.el"))
+  :config
+  (message "anddo loaded"))
 
 
 (use-package ispell-multi
