@@ -389,22 +389,6 @@ PKG skal være et symbol som f.eks. 'min-elisp."
   :straight (:host github :repo "phimuemue/emacs-hacks"
 		   :files ("ispell-multi.el")))
 
-
-(use-package min-elisp
-  :straight (min-elisp
-             :type git
-             :host github
-             :repo "rolfmblindgren/min-elisp"
-             ;; :branch "main"         ; hvis du ikke bruker default
-             :files ("*.el" "lisp/*.el") ; om koden ligger i undermapper
-             )
-  :commands (min-elisp-start)   ; autoload-kommandoer (frivillig)
-  :init
-  ;; konfig før load (frivillig)
-  :config
-  ;; konfig etter load
-  (message "min-elisp loaded"))
-
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8-unix)
 (setq-default buffer-file-coding-system 'utf-8-unix)
@@ -416,6 +400,5 @@ PKG skal være et symbol som f.eks. 'min-elisp."
 
 (load custom-file)
 
-(provide 'init)
 
 ;;;
