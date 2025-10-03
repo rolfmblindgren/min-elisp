@@ -333,6 +333,7 @@ PKG skal være et symbol som f.eks. 'min-elisp."
         (straight-rebuild-package pkg)
         (message "%s oppdatert til %s og rebygd" pkg after)))))
 
+(straight-use-package 'tsc)
 
 (use-package ws-butler
   :straight (ws-butler
