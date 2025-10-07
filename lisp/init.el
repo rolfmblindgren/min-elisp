@@ -399,6 +399,8 @@ PKG skal være et symbol som f.eks. 'min-elisp."
          (prog-mode . flyspell-prog-mode)))
 
 
+
+
 (defun rb/flyspell-avoid-restarting ()
   (when (and ispell-process
              (process-live-p ispell-process))
