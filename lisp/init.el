@@ -443,5 +443,6 @@ PKG skal være et symbol som f.eks. 'min-elisp."
 
 (add-hook 'desktop-after-read-hook #'rb/disable-flyspell-in-restored-buffers)
 
+(message "init.el loaded")
 
 ;;;
