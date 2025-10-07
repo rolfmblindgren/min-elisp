@@ -385,9 +385,32 @@ PKG skal være et symbol som f.eks. 'min-elisp."
   (message "anddo loaded"))
 
 
-(use-package ispell-multi
-  :straight (:host github :repo "phimuemue/emacs-hacks"
-		   :files ("ispell-multi.el")))
+(use-package ispell
+  :defer t
+  :init
+  (setq ispell-program-name "hunspell")
+  (setq ispell-dictionary "nb_NO")
+  (setq ispell-really-hunspell t)
+  (setq ispell-personal-dictionary "~/.hunspell_nb_NO"))
+
+(use-package flyspell
+  :defer t
+  :hook ((text-mode . flyspell-mode)
+         (prog-mode . flyspell-prog-mode)))
+
+
+(defun rb/flyspell-avoid-restarting ()
+  (when (and ispell-process
+             (process-live-p ispell-process))
+    (message "Reusing ispell process: %s" ispell-process)))
+
+(add-hook 'flyspell-mode-hook #'rb/flyspell-avoid-restarting)
+
+(when (executable-find "hunspell")
+  (setq ispell-program-name "hunspell")
+  (setq ispell-dictionary "nb_NO")
+  ;; Forhindrer at flyspell starter ny prosess hver gang
+  (setq ispell-really-hunspell t))
 
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8-unix)
@@ -398,7 +421,17 @@ PKG skal være et symbol som f.eks. 'min-elisp."
 
 (require 'LaTeX-quote-hacks)
 
+
 (load custom-file)
+
+(defun rb/disable-flyspell-in-restored-buffers ()
+  "Disable flyspell-mode in all buffers after desktop is read."
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (bound-and-true-p flyspell-mode)
+        (flyspell-mode -1)))))
+
+(add-hook 'desktop-after-read-hook #'rb/disable-flyspell-in-restored-buffers)
 
 
 ;;;
