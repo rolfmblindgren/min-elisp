@@ -447,8 +447,7 @@ PKG skal være et symbol som f.eks. 'min-elisp."
              :repo "larsmagne/anddo.el"
              :local-repo "anddo-repo"
              :files ("anddo.el"))
-  :config
-  (message "anddo loaded"))
+  :config (message "anddo loaded"))
 
 
 (use-package ispell
@@ -478,8 +477,7 @@ PKG skal være et symbol som f.eks. 'min-elisp."
              :repo "rolfmblindgren/min-elisp"
              :files ("*.el" "lisp/*.el"))
   :commands (min-elisp-start)
-  :config
-  (message "min-elisp loaded"))
+  :config (message "min-elisp loaded"))
 
 
 (defun rb/flyspell-avoid-restarting ()
