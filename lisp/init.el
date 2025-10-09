@@ -542,7 +542,7 @@ eller build mangler/er eldre."
       (advice-remove 'message #'silence))))
 
 (advice-add 'ispell-init-process :around #'suppress-messages)
-(advice-add 'ispell-kill-ispell :around #'suppress-messages)
+(advice-add 'ispell-kill-ispell :around #'suppress-messages)x
 
 (advice-add #'ispell-init-process :around #'message-off-advice)
 
