@@ -459,6 +459,13 @@ PKG skal være et symbol som f.eks. 'min-elisp."
   (setq ispell-really-hunspell t)
   (setq ispell-personal-dictionary "~/.hunspell_nb_NO"))
 
+(when (executable-find "hunspell")
+  (setq ispell-program-name "hunspell")
+  (setq ispell-dictionary "nb_NO")
+  ;; Forhindrer at flyspell starter ny prosess hver gang
+  (setq ispell-really-hunspell t))
+
+
 (use-package flyspell
   :defer t
   :hook ((text-mode . flyspell-mode)
@@ -482,11 +489,6 @@ PKG skal være et symbol som f.eks. 'min-elisp."
 
 (add-hook 'flyspell-mode-hook #'rb/flyspell-avoid-restarting)
 
-(when (executable-find "hunspell")
-  (setq ispell-program-name "hunspell")
-  (setq ispell-dictionary "nb_NO")
-  ;; Forhindrer at flyspell starter ny prosess hver gang
-  (setq ispell-really-hunspell t))
 
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8-unix)
