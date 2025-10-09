@@ -385,19 +385,78 @@
 (add-hook 'yaml-ts-mode-hook
           (lambda () (add-hook 'before-save-hook #'roffe/yaml-format-buffer-maybe nil t)))
 
+
 (defun rb/straight-update-and-maybe-rebuild (pkg)
-  "Pull straight PKG. Rebuild bare hvis det kom nye commits.
-PKG skal være et symbol som f.eks. 'min-elisp."
-  (interactive (list (intern (completing-read "Package: " (hash-table-keys straight--recipe-cache)))))
-  (let* ((repo-dir (straight--repos-dir (symbol-name pkg)))
-         (default-directory repo-dir)
-         (before (string-trim (shell-command-to-string "git rev-parse HEAD"))))
-    (straight-pull-package pkg)
-    (let* ((after (string-trim (shell-command-to-string "git rev-parse HEAD"))))
-      (if (equal before after)
-          (message "%s er allerede oppdatert (%s)" pkg after)
-        (straight-rebuild-package pkg)
-        (message "%s oppdatert til %s og rebygd" pkg after)))))
+  "Oppdater straight-PKG fra GitHub og rebuild hvis nødvendig.
+Sjekker upstream og rebuild’er bare når .el-filer har endret seg
+eller build mangler/er eldre."
+  (interactive
+   (list (intern (completing-read "Pakke: "
+                                  (hash-table-keys straight--recipe-cache)))))
+  (let* ((name (symbol-name pkg))
+         (repo (straight--repos-dir name))
+         (build (straight--build-dir name))
+         (default-directory repo))
+
+    ;; Finn upstream-branch
+    (unless (zerop (call-process "git" nil nil nil "fetch" "--tags" "--prune" "origin"))
+      (user-error "git fetch feilet i %s" repo))
+    (let* ((upstream
+            (string-trim
+             (or (with-output-to-string
+                   (call-process "git" nil standard-output nil
+                                 "rev-parse" "--abbrev-ref" "--symbolic-full-name" "@{u}"))
+                 "")))
+           ;; fall back til origin/main eller origin/master hvis @{u} ikke er satt
+           (upstream (if (string-empty-p upstream)
+                         (if (zerop (call-process "git" nil nil nil "show-ref" "--verify" "refs/remotes/origin/main"))
+                             "origin/main" "origin/master")
+                       upstream))
+           (before (string-trim (with-output-to-string
+                                  (call-process "git" nil standard-output nil "rev-parse" "HEAD"))))
+           (remote (string-trim (with-output-to-string
+                                  (call-process "git" nil standard-output nil "rev-parse" upstream))))
+           ;; er straight-klonen bak?
+           (behind (not (string= before remote))))
+
+      ;; Dra inn nyeste via straight (respekterer recipe/branch)
+      (when behind
+        (straight-pull-package pkg))
+
+      (let* ((after (string-trim (with-output-to-string
+                                   (call-process "git" nil standard-output nil "rev-parse" "HEAD"))))
+             ;; Finn om .el-filer faktisk endret seg mellom before og after
+             (changed-el
+              (and (not (string= before after))
+                   (with-temp-buffer
+                     (when (zerop (call-process "git" nil t nil
+                                                "diff" "--name-only" before after "--" "*.el"))
+                       (goto-char (point-min))
+                       (re-search-forward "." nil t)))))
+             ;; Eller om build mangler/eldre enn repo
+             (repo-newest
+              (apply #'max 0
+                     (mapcar (lambda (f)
+                               (float-time (file-attribute-modification-time (file-attributes f))))
+                             (directory-files-recursively repo "\\.el\\'"))))
+             (build-newest
+              (if (file-directory-p build)
+                  (apply #'max 0
+                         (mapcar (lambda (f)
+                                   (float-time (file-attribute-modification-time (file-attributes f))))
+                                 (directory-files-recursively build "\\.el\\'")))
+                0))
+             (stale (> repo-newest build-newest)))
+        (cond
+         ((or changed-el stale (not (file-directory-p build)))
+          (straight-rebuild-package pkg)
+          (message "%s oppdatert%s og rebygd (HEAD %s → %s)" pkg
+                   (cond (changed-el " (kilde endret)")
+                         (stale " (build etter)")
+                         (t ""))
+                   before after))
+         (t
+          (message "%s er oppdatert; ingen rebuild nødvendig (HEAD %s)" pkg after)))))))
 
 (straight-use-package 'tsc)
 
