@@ -544,7 +544,7 @@ eller build mangler/er eldre."
 ;; (advice-add 'ispell-init-process :around #'suppress-messages)
 ;; (advice-add 'ispell-kill-ispell :around #'suppress-messages)x
 
-(advice-add #'ispell-init-process :around #'message-off-advice)
+;; (advice-add #'ispell-init-process :around #'message-off-advice)
 
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8-unix)
