@@ -527,15 +527,6 @@ eller build mangler/er eldre."
   :hook ((text-mode . flyspell-mode)
          (prog-mode . flyspell-prog-mode)))
 
-(use-package min-elisp
-  :straight (min-elisp
-             :type git
-             :host github
-             :repo "rolfmblindgren/min-elisp"
-	     :branch "main"
-             :files ("*.el" "lisp/*.el"))
-  :commands (min-elisp-start)
-  :config (message "min-elisp loaded"))
 
 
 (defun rb/flyspell-avoid-restarting ()
