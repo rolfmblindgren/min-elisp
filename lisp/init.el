@@ -485,6 +485,16 @@ PKG skal være et symbol som f.eks. 'min-elisp."
 
 (add-hook 'flyspell-mode-hook #'rb/flyspell-avoid-restarting)
 
+(defun message-off-advice (oldfun &rest args)
+  "Quiet down messages in adviced OLDFUN."
+  (let ((message-off (make-symbol "message-off")))
+    (unwind-protect
+    (progn
+      (advice-add #'message :around #'ignore (list 'name message-off))
+      (apply oldfun args))
+    (advice-remove #'message message-off))))
+
+(advice-add #'ispell-init-process :around #'message-off-advice)
 
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8-unix)
