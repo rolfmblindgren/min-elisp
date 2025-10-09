@@ -290,6 +290,72 @@
   :hook ((yaml-ts-mode . lsp-deferred)
          (yaml-ts-mode . highlight-indent-guides-mode)))
 
+
+;; --- SLY (Common Lisp) + vennene dens ---
+
+(use-package sly
+  :straight t
+  :commands (sly sly-connect)
+  :init
+  (setq inferior-lisp-program "/opt/homebrew/bin/sbcl") ; juster sti ved behov
+  ;; litt mer «smidig» symbolfullføring:
+  (setq sly-complete-symbol-function 'sly-flex-completions)
+  :hook
+  ;; Redigeringshjelp (paredit-lignende ting som følger med sly)
+  (lisp-mode . sly-editing-mode)
+  :config
+  (message "Sly bruker %s" inferior-lisp-program))
+
+;; Quicklisp-integrasjon (M-x sly-quicklisp-*)
+(use-package sly-quicklisp
+  :straight t
+  :after sly)
+
+;; ASDF-integrasjon (M-x sly-asdf-*)
+(use-package sly-asdf
+  :straight t
+  :after sly)
+
+;; Autoutfylling
+(use-package company
+  :straight t
+  :hook ((sly-mode . company-mode)
+         (sly-mrepl-mode . company-mode))
+  :config
+  (setq company-idle-delay 0.1
+        company-minimum-prefix-length 1
+        company-tooltip-align-annotations t))
+
+;; Snippets
+(use-package yasnippet
+  :straight t
+  :hook ((sly-mode . yas-minor-mode)
+         (lisp-mode . yas-minor-mode)))
+
+;; Snippets for Common Lisp
+(use-package common-lisp-snippets
+  :straight t
+  :after yasnippet)
+
+;; Valgfritt: vis SLY-REPL automatisk når du åpner en .lisp-fil
+(add-hook 'lisp-mode-hook
+          (lambda ()
+            (unless (sly-connected-p)
+              (save-excursion (sly)))))
+
+;; Nyttige tastetrykk å huske (innebygd i sly):
+;;  C-c C-z : til REPL
+;;  C-c C-k : kompilér og last hele bufferet
+;;  C-c C-c : kompilér/last defun ved punktet
+;;  C-c C-l : last fil
+;;  M-.     : hopp til definisjon
+;;  M-,     : tilbake
+
+(add-hook 'lisp-mode-hook
+          (lambda ()
+            (unless (sly-connected-p)
+              (save-excursion (sly)))))
+
 ;; b) Hvis du trenger klassisk yaml-mode i stedet:
 ;; (use-package yaml-mode
 ;;   :mode ("\\.ya?ml\\'" . yaml-mode)
