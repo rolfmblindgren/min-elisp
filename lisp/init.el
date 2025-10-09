@@ -473,6 +473,7 @@ PKG skal være et symbol som f.eks. 'min-elisp."
              :type git
              :host github
              :repo "rolfmblindgren/min-elisp"
+	     :branch "main"
              :files ("*.el" "lisp/*.el"))
   :commands (min-elisp-start)
   :config (message "min-elisp loaded"))
