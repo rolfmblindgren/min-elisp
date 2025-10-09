@@ -534,18 +534,6 @@ eller build mangler/er eldre."
 
 (add-hook 'flyspell-mode-hook #'rb/flyspell-avoid-restarting)
 
-;; (defun suppress-messages (old-fun &rest args)
-;;   (cl-flet ((silence (&rest args1) (ignore)))
-;;     (advice-add 'message :around #'silence)
-;;     (unwind-protect
-;;          (apply old-fun args)
-;;       (advice-remove 'message #'silence))))
-
-;; (advice-add 'ispell-init-process :around #'suppress-messages)
-;; (advice-add 'ispell-kill-ispell :around #'suppress-messages)x
-
-;; (advice-add #'ispell-init-process :around #'message-off-advice)
-
 (set-language-environment "UTF-8")
 (prefer-coding-system 'utf-8-unix)
 (setq-default buffer-file-coding-system 'utf-8-unix)
@@ -554,7 +542,6 @@ eller build mangler/er eldre."
 (add-to-list 'text-mode-hook 'flyspell-mode)
 
 (require 'LaTeX-quote-hacks)
-
 
 (load custom-file)
 
