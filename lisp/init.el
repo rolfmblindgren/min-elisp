@@ -534,14 +534,15 @@ eller build mangler/er eldre."
 
 (add-hook 'flyspell-mode-hook #'rb/flyspell-avoid-restarting)
 
-(defun message-off-advice (oldfun &rest args)
-  "Quiet down messages in adviced OLDFUN."
-  (let ((message-off (make-symbol "message-off")))
+(defun suppress-messages (old-fun &rest args)
+  (cl-flet ((silence (&rest args1) (ignore)))
+    (advice-add 'message :around #'silence)
     (unwind-protect
-    (progn
-      (advice-add #'message :around #'ignore (list 'name message-off))
-      (apply oldfun args))
-    (advice-remove #'message message-off))))
+         (apply old-fun args)
+      (advice-remove 'message #'silence))))
+
+(advice-add 'ispell-init-process :around #'suppress-messages)
+(advice-add 'ispell-kill-ispell :around #'suppress-messages)
 
 (advice-add #'ispell-init-process :around #'message-off-advice)
 
