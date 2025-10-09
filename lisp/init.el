@@ -527,8 +527,6 @@ eller build mangler/er eldre."
   :hook ((text-mode . flyspell-mode)
          (prog-mode . flyspell-prog-mode)))
 
-
-
 (defun rb/flyspell-avoid-restarting ()
   (when (and ispell-process
              (process-live-p ispell-process))
